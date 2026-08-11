@@ -57,7 +57,7 @@ excess kurtosis=+2.51). Given this, ANOVA results were corroborated with both th
 </section>
 
 <section data-fig="h">
-  UAV imagery was convoluted with a point spread function (PSF) to emulate Landsat's optical response, then compared against Landsat on August 25, 2025. Correlation is high but the slope is poor, likely due to a resampling step in our workflow that does not account for the 100&nbsp;m to 30&nbsp;m transition. Instead, it applies the PSF and bins directly to 30&nbsp;m, with zonal statistics computed in ArcGIS.
+  UAV imagery was convoluted with Landsat TIRS' point spread function (PSF) to emulate an optical response similar to TIRS. This convoluted image was then resampled and compared against Landsat on August 25, 2025. Correlation is high but the slope is poor, likely due to a resampling step in our workflow that does not account for the 100&nbsp;m to 30&nbsp;m resampling scheme applied to Level 2 Landsat data. Instead, our method applies the PSF and bins directly to 30&nbsp;m, with zonal statistics computed in ArcGIS. Further investigation is needed to resolve this issue.
 </section>
 
 <section data-fig="i">

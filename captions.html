@@ -1,0 +1,65 @@
+<!--
+  ============================================================
+  FIGURE CAPTIONS  —  edit the text below, nothing else needed
+  ============================================================
+  Rules:
+    * Keep each <section data-fig="x"> ... </section> wrapper.
+    * "x" is the figure letter (a through i). Do not change it.
+    * Write plain sentences. For a new paragraph, wrap it in <p>...</p>.
+    * For a monospace / code block (like the stats in b), use <pre> ... </pre>.
+    * Inside <pre>, write "&lt;" instead of "<" (e.g. p&lt;0.001).
+  This file is loaded by index.html when the page opens.
+-->
+
+<section data-fig="a">
+  Side-by-side comparison of coincident thermal imagery acquired on August 25, 2025: one scene from Landsat 8's Thermal Infrared Sensor (TIRS), the other from a DJI Mavic 3T drone. Mean acquisition time was 12:30 local time.
+</section>
+
+<section data-fig="b">
+  <p>Across a climatic gradient in Southern Alberta, wetlands were consistently cooler at the surface than adjacent grasslands, by an average of 10.4&nbsp;&deg;C (2014 to 2025). Conserving these systems preserves biodiversity and carbon storage while sustaining local cooling effects that may extend to the broader climate.</p>
+  <pre>
+  [ANOVA III]  Region p &lt; 0.001 | SiteType p &lt; 0.001 | Interaction p &lt; 0.001
+
+  Grassland vs Wetland  (Welch t-test, unequal variance)
+  Overall  diff=10.4 C  t=32.25  df=1068.6  d=1.86 [1.72,1.99]  p&lt;0.001
+  West     diff= 9.1 C  t=20.65  df= 288.0  d=2.09 [1.84,2.34]  p&lt;0.001
+  Centre   diff= 8.9 C  t=17.28  df= 372.3  d=1.73 [1.50,1.96]  p&lt;0.001
+  East     diff=13.1 C  t=21.32  df= 386.1  d=2.08 [1.84,2.33]  p&lt;0.001
+
+Permutation two-way ANOVA (Type III, 10,000 permutations)
+  Region        F=  41.94   p&lt;0.0001  
+  Site type     F=1111.82   p&lt;0.0001  
+  Interaction   F=  19.82   p&lt;0.0001  
+
+Shapiro-Francia tests on the ANOVA residuals rejected normality
+(pooled W=0.960, p&lt;0.001; left-skewed, skew=-0.87,
+excess kurtosis=+2.51). Given this, ANOVA results were corroborated with both the PERMANOVA and Welch t-tests to confirm significance.</pre>
+</section>
+
+<section data-fig="c">
+  Landsat and UAV surface temperatures both correlate strongly with in-situ (ground) measurements, confirming that each method is suitable for larger-scale investigation. Both also exhibit a slight skew and bias, indicating that a field calibration routine would be required for accurate, repeatable UAV retrievals. Given the relative accuracy compared to in-situ data, a Landsat-based workflow could extend analysis of wetland cooling to continental or planetary scales.
+</section>
+
+<section data-fig="d">
+  Surface-to-air temperature difference derived from Landsat and ACIS meteorological data, 2014 to 2025 (days 91 to 272, April 1 to September 29). The pattern mirrors trends across the Southern Alberta sites, with wetlands producing a significant cooling effect (p less than 0.05, Kruskal-Wallis test).
+</section>
+
+<section data-fig="e">
+  Mean diurnal vegetation-to-air temperature difference measured in situ, 2025 (days 91 to 272, April 1 to September 29). Wetland vegetation averaged roughly 5&nbsp;&deg;C cooler than adjacent grassland. The difference falls below zero in the early morning and late afternoon: as stomata open, transpiration cools the vegetation below air temperature. Near midday, incoming solar radiation overwhelms this cooling and the difference becomes positive, however still cooler than the grassland due to enhanced water availabilty. As radiation declines through the afternoon, transpirational cooling again dominates and the difference returns below zero, until stomata close overnight and surface to air difference settles near zero.
+</section>
+
+<section data-fig="f">
+  Monthly mean surface-to-air temperature difference across the Southern Alberta sites, 2014 to 2025 (days 91 to 272, April 1 to September 29).
+</section>
+
+<section data-fig="g">
+  Meteorological data for the Southern Alberta sites, 2014 to 2025 (days 91 to 272, April 1 to September 29): air temperature, precipitation, and vapor pressure deficit. A clear climatic gradient is present between the sites. The eastern Pakowki Lake site is warmer and drier with higher VPD, whereas the western Waterton site lies much closer to the mountains, receiving greater precipitation, lowering the vapor pressure deficit.
+</section>
+
+<section data-fig="h">
+  UAV imagery was convoluted with a point spread function (PSF) to emulate Landsat's optical response, then compared against Landsat on August 25, 2025. Correlation is high but the slope is poor, likely due to a resampling step in our workflow that does not account for the 100&nbsp;m to 30&nbsp;m transition. Instead, it applies the PSF and bins directly to 30&nbsp;m, with zonal statistics computed in ArcGIS.
+</section>
+
+<section data-fig="i">
+  A non-computer-vision workflow was used to compare UAV measurements to in-situ readings on August 25, 2025, using thermal orthophotos and the mean temperature between the start and end of the flight. It performs identically to the computer-vision approach which retrieves individual images captured by the UAV instead of using the stiched orthophoto, indicating that the orthophoto method is valid method of assessing surface temperature, even with longer flight times.
+</section>

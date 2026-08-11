@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fischer et al. — Wetlands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
+<link rel="prefetch" href="media/Quinn Fischer NSERC Poster Aug10.pdf">
+<style>
+  /* poster palette */
+  :root {
+    --ink:      #1f363d;  /* darkest slate-teal, body/title */
+    --ink-soft: #3f6963;  /* deep green-teal */
+    --accent:   #c04f15;  /* burnt orange */
+    --paper:    #f4f0e8;  /* pane cream */
+    --line:     rgba(31,54,61,0.12);
+    --shadow:   rgba(31,54,61,0.10);
+    --grey:     #e6e3dc;
+    --grey-dark: #a3a3a3;
+
+    /* poster figure colors, one per appendix box */
+    --fig-a: #c04f15;
+    --fig-b: #3a8168;
+    --fig-c: #5b8f62;
+    --fig-d: #8fb8d6;
+    --fig-e: #ccb47c;
+    --fig-f: #c58f8d;
+    --fig-g: #878fb8;
+    --fig-h: #a393b8;
+    --fig-i: #c193a9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    color: var(--ink);
+    background-color: #ffffff;
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* static paper texture: own fixed layer, no negative z-index (Chrome-safe) */
+  .bg-texture {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-color: #ffffff;
+    background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1.2px);
+    background-size: 5px 5px;
+    pointer-events: none;
+  }
+
+  /* page: colored pane centered, grows with content */
+  .centerpane {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 5vh auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 12px 30px var(--shadow), 0 4px 10px rgba(31,54,61,0.05);
+  }
+
+  .content {
+    padding: clamp(1.75rem, 6vw, 3.25rem);
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 0 0 0.4em 0;
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 7vw, 2.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.4px;
+    color: var(--ink);
+  }
+
+  /* footer: logo box, line, copyright box — sits below the cream pane */
+  .footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 760px;
+    margin: 0 auto 6vh;
+    padding: 0 6vw;
+  }
+  .footer-box {
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.9rem 1.6rem;
+    border: 5px solid var(--grey-dark);
+    border-radius: 20px;
+    background: var(--paper);
+  }
+  .logos {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1.75rem;
+  }
+  .logos img {
+    height: 2.2rem;
+    width: auto;
+  }
+  .footer-connector {
+    height: 26px;
+    width: 40%;
+  }
+  .footer-connector path {
+    fill: none;
+    stroke: var(--grey-dark);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  .copyright {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .copyright a { color: var(--accent); }
+
+  .subtag {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(1.3rem, 4.3vw, 1.6rem);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    text-wrap: balance;
+  }
+
+  .authors-box {
+    display: block;
+    width: fit-content;
+    margin: 1.1rem auto 0;
+    padding: 0.9rem 1.6rem;
+    background: transparent;
+    border: 5px solid var(--grey-dark);
+    border-radius: 20px;
+    text-align: left;
+  }
+  .authors-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    column-gap: 1.6rem;
+    padding-left: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .authors-grid sup {
+    font-size: 0.65em;
+    font-weight: 400;
+    color: var(--ink-soft);
+  }
+  .authors-grid a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .orcid-logo {
+    width: 0.95em;
+    height: 0.95em;
+    vertical-align: -0.12em;
+    margin-right: 0.3em;
+  }
+  .affiliations {
+    margin: 0.5rem 0 0 0;
+    padding-left: 0;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .institution {
+    margin: 0.15rem 0 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .institution a { color: inherit; }
+
+  .description {
+    text-align: left;
+    font-size: clamp(1rem, 3vw, 1.05rem);
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .description p {
+    margin: 0 0 0.8rem 0;
+    text-indent: 2rem;
+  }
+
+  /* resource bar: 4 across, wraps to 2x2 on narrow screens */
+  .links {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-top: 1.75rem;
+  }
+  .links a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.7rem 0.5rem;
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .links a:hover {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .links a svg { width: 1em; height: 1em; fill: currentColor; }
+
+  /* greyed-out "coming soon" buttons */
+  .links a.soon {
+    color: #9aa3a1;
+    background: #edeae2;
+    border-color: var(--line);
+    cursor: default;
+    pointer-events: none;
+  }
+  .links a.soon .badge {
+    position: absolute;
+    top: -7px;
+    right: -6px;
+    transform: rotate(-16deg);
+    font-family: "Comic Sans MS", "Comic Neue", "Chalkboard SE", cursive;
+    font-weight: 700;
+    font-size: 0.62rem;
+    color: #d11f1f;
+    pointer-events: none;
+  }
+  @media (max-width: 440px) {
+    .links { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  main a { color: var(--accent); }
+
+  /* section title sits centered over the divider line */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin: 2.75rem 0 1.5rem;
+    text-align: center;
+  }
+  .section-title::before,
+  .section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .appendix-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.25rem;
+  }
+
+  .fig-item.wide { grid-column: 1 / -1; }
+
+  .fig-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fig-box {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--fig-ratio, 4 / 3);
+    border: 5px solid color-mix(in srgb, var(--fig-color, var(--ink)) 40%, #fff);
+    border-radius: 22px;
+    background-color: #fff;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+  /* square-ish figures share one 1:1 thumbnail so the grid stays even */
+  .fig-item[data-shape="square"] .fig-box {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* absolute so the image never forces the box taller than its aspect-ratio */
+  .fig-box img {
+    position: absolute;
+    inset: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    object-fit: contain;
+    border-radius: 12px;
+  }
+
+  /* dual figure: two svgs side by side in one box */
+  .fig-dual {
+    position: absolute;
+    inset: 10px;
+    display: flex;
+    gap: 6px;
+  }
+  .fig-box .fig-dual img {
+    position: static;
+    inset: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    height: 100%;
+  }
+
+  .fig-badge {
+    position: absolute;
+    top: -16px;
+    left: -16px;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 5px solid color-mix(in srgb, var(--fig-color, var(--ink)) 40%, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: lowercase;
+    color: #fff;
+    background: color-mix(in srgb, var(--fig-color, var(--ink)) 85%, #fff);
+  }
+
+  @media (max-width: 480px) {
+    .centerpane { width: auto; margin: 2.5vw; border-radius: 10px; }
+    .authors-grid { grid-template-columns: 1fr; row-gap: 0.15rem; }
+  }
+
+  /* lightbox — toggled purely by a hidden checkbox, no JS */
+  .lb-toggle { position: absolute; opacity: 0; pointer-events: none; }
+
+  /* freeze the page behind an open lightbox (stops touch scroll chaining) */
+  html:has(.lb-toggle:checked) { overflow: hidden; }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.5vh 1.5vw;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 100;
+  }
+  .lb-toggle:checked + .lightbox {
+    opacity: 1;
+    visibility: visible;
+  }
+  .lightbox-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 54, 61, 0.72);
+    cursor: default;
+  }
+  .lightbox-content {
+    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    transform: scale(0.94);
+    transition: transform 0.25s ease;
+  }
+  .lb-toggle:checked + .lightbox .lightbox-content {
+    transform: scale(1);
+  }
+
+  /* the figure itself: white box, colored border, shrinks to the image */
+  .lightbox-figure {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 5px solid var(--fig-color, var(--ink));
+    border-radius: 22px;
+    padding: 0.4rem;
+  }
+  .lightbox-content[data-shape="square"] .lightbox-figure {
+    width: min(440px, 90vw, 64vh);
+    aspect-ratio: 1 / 1;
+  }
+  .lightbox-content[data-shape="square"] .lightbox-img {
+    width: 100%;
+    height: 100%;
+  }
+  .lightbox-content[data-shape="wide"] .lightbox-figure {
+    width: min(96vw, 1100px);
+  }
+  .lightbox-content[data-shape="wide"] .lightbox-img {
+    width: 100%;
+    height: auto;
+    max-height: 68vh;
+  }
+  .lightbox-img {
+    display: block;
+    object-fit: contain;
+  }
+  /* dual figure in the lightbox: two svgs side by side */
+  .lightbox-figure--dual { gap: 0.5rem; }
+  .lightbox-figure--dual .lightbox-img {
+    width: auto;
+    height: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    max-height: 68vh;
+  }
+
+  .lightbox-badge {
+    position: absolute;
+    top: -16px;
+    left: -16px;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 5px solid var(--fig-color, var(--ink));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: lowercase;
+    color: #fff;
+    background: color-mix(in srgb, var(--fig-color, var(--ink)) 85%, #fff);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 5px solid var(--fig-color, var(--ink));
+    background: #fff;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* connector: vertical line down, then T out onto the caption dashes */
+  .lightbox-connector {
+    flex-shrink: 0;
+    height: 26px;
+    width: 40%;
+  }
+  .lightbox-connector path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--fig-color, var(--ink)) 55%, #fff);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.5s ease 0.15s;
+  }
+  .lb-toggle:checked + .lightbox .lightbox-connector path {
+    stroke-dashoffset: 0;
+  }
+
+  .lightbox-caption p { margin: 0 0 0.6rem; }
+  .lightbox-caption p:last-child { margin-bottom: 0; }
+  .lightbox-caption pre {
+    margin: 0.7rem 0 0;
+    padding: 0.7rem 0.85rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-family: ui-monospace, "Cascadia Code", "Consolas", "Liberation Mono", monospace;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    color: var(--ink);
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* description sits OUTSIDE the figure, spanning the cream-section width */
+  .lightbox-caption {
+    flex-shrink: 0;
+    margin: 0;
+    width: min(92vw, 760px);
+    min-height: 2.5rem;
+    box-sizing: border-box;
+    text-align: left;
+    padding: 0.9rem 1.2rem;
+    border: 5px dashed color-mix(in srgb, var(--fig-color, var(--ink)) 40%, #fff);
+    border-radius: 18px;
+    background: var(--paper);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  /* caption reveals just after the connector line finishes drawing */
+  .lb-toggle:checked + .lightbox .lightbox-caption {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-texture" aria-hidden="true"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="orcid" viewBox="0 0 256 256">
+      <path fill="#A6CE39" d="M256 128c0 70.7-57.3 128-128 128S0 198.7 0 128 57.3 0 128 0s128 57.3 128 128z"/>
+      <path fill="#FFF" d="M86.3 186.2H70.9V79.1h15.4v107.1zM108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7 0-21.5-13.7-39.7-43.7-39.7h-23.7v79.4zM88.7 56.8c0 5.5-4.5 10.1-10.1 10.1s-10.1-4.6-10.1-10.1c0-5.6 4.5-10.1 10.1-10.1s10.1 4.6 10.1 10.1z"/>
+    </symbol>
+  </svg>
+  <div class="centerpane">
+    <div class="content">
+      <header>
+        <h1>Wetlands are cool places:</h1>
+        <p class="subtag">High evapotranspiration reduces surface temperature in prairie wetlands</p>
+        <div class="authors-box">
+          <div class="authors-grid">
+            <span><a href="https://orcid.org/0009-0002-9456-8926"><svg class="orcid-logo"><use href="#orcid"/></svg>Quinn L. Fischer</a><sup>b</sup>,</span><span><a href="https://orcid.org/0009-0006-0117-8320"><svg class="orcid-logo"><use href="#orcid"/></svg>Alex M. Frost</a><sup>b</sup>,</span>
+            <span><a href="https://orcid.org/0000-0002-7696-264X"><svg class="orcid-logo"><use href="#orcid"/></svg>Craig A. Coburn</a><sup>b</sup>,</span><span><a href="https://orcid.org/0000-0003-1748-0306"><svg class="orcid-logo"><use href="#orcid"/></svg>Lawrence B. Flanagan</a><sup>a</sup></span>
+          </div>
+          <p class="affiliations">
+            a. Department of Biological Sciences<br>
+            b. Department of Geography and Environment
+          </p>
+          <p class="institution">@ <a href="https://uleth.ca">The University of Lethbridge</a></p>
+        </div>
+      </header>
+
+      <nav class="links">
+        <a href="media/Quinn Fischer NSERC Poster Aug10.pdf">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 0h5l3 3v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1zm5 1v2.5h2.5L9 1zM5 8h6v1H5V8zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/></svg>
+          Poster
+        </a>
+        <a href="#" class="soon">Dataset<span class="badge">Coming soon!</span></a>
+        <a href="#" class="soon">Publication<span class="badge">Coming soon!</span></a>
+        <a href="https://github.com/qfisch">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </nav>
+
+      <main class="description">
+        <h2 class="section-title">Abstract</h2>
+        <p>Wetlands can enhance biodiversity, carbon sequestration, and water quality. These systems can also provide additional climatic regulation via evapotranspiration, cooling their surrounding environment by changing heat flux partitioning, altering cooling on local and global scales. However, wetlands continue to be threatened by agriculture and development.</p>
+        <p>In this study, we established the presence of a significant cooling effect within four prairie pothole wetlands located in southern Alberta. Surface/air temperature difference within wetlands was compared to adjacent grassland areas using a thermal remote sensing workflow. We then verified our findings at Frank Lake, AB, using in-situ meteorological data and drone-based thermal imaging.</p>
+      </main>
+
+      <section class="appendix">
+        <h2 class="section-title">Poster- Supplementary Figures &amp; Data</h2>
+        <div class="appendix-grid">
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-a)">
+            <label class="fig-box" for="lb-a"><span class="fig-badge">a</span><img src="media/a.webp" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-b)">
+            <label class="fig-box" for="lb-b"><span class="fig-badge">b</span><img src="media/b.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item wide" data-shape="wide" style="--fig-color:var(--fig-c); --fig-ratio:1132/584">
+            <label class="fig-box" for="lb-c"><span class="fig-badge">c</span><span class="fig-dual"><img src="media/c1.svg" loading="lazy" alt=""><img src="media/c2.svg" loading="lazy" alt=""></span></label>
+          </div>
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-d)">
+            <label class="fig-box" for="lb-d"><span class="fig-badge">d</span><img src="media/1-FL_boxplot_dT.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-e)">
+            <label class="fig-box" for="lb-e"><span class="fig-badge">e</span><img src="media/2-FL_insitu_diurnal.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item wide" data-shape="wide" style="--fig-color:var(--fig-f); --fig-ratio:1436/523">
+            <label class="fig-box" for="lb-f"><span class="fig-badge">f</span><img src="media/5-multipanel-monthly.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item wide" data-shape="wide" style="--fig-color:var(--fig-g); --fig-ratio:1436/519">
+            <label class="fig-box" for="lb-g"><span class="fig-badge">g</span><img src="media/6-multipanel-monthly-meteo.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-h)">
+            <label class="fig-box" for="lb-h"><span class="fig-badge">h</span><img src="media/7-PSF_UAV_to_Landsat.svg" loading="lazy" alt=""></label>
+          </div>
+          <div class="fig-item" data-shape="square" style="--fig-color:var(--fig-i)">
+            <label class="fig-box" for="lb-i"><span class="fig-badge">i</span><img src="media/8-UAV_to_InSitu.svg" loading="lazy" alt=""></label>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-box logos">
+      <a href="https://uleth.ca"><img src="media/UofL_Landscape_RGB_Black.svg" alt="University of Lethbridge"></a>
+      <a href="https://nserc-crsng.canada.ca/en"><img src="media/NSERC_BLACK.svg" alt="NSERC"></a>
+    </div>
+    <svg class="footer-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path d="M50,0 L50,26"/></svg>
+    <div class="footer-box copyright">
+      Copyright &copy; Flanagan Lab 2026 &middot; Released under the <a href="https://opensource.org/license/mit">MIT License</a>
+    </div>
+  </footer>
+
+  <!-- lightboxes: each checkbox toggles the overlay that immediately follows it -->
+  <input type="checkbox" class="lb-toggle" id="lb-a">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-a" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="wide" style="--fig-color:var(--fig-a)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">a</span>
+        <label class="lightbox-close" for="lb-a" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/a.webp" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="a"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-b">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-b" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="square" style="--fig-color:var(--fig-b)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">b</span>
+        <label class="lightbox-close" for="lb-b" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/b.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="b"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-c">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-c" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="wide" style="--fig-color:var(--fig-c)">
+      <div class="lightbox-figure lightbox-figure--dual">
+        <span class="lightbox-badge">c</span>
+        <label class="lightbox-close" for="lb-c" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/c1.svg" loading="lazy" alt="">
+        <img class="lightbox-img" src="media/c2.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="c"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-d">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-d" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="square" style="--fig-color:var(--fig-d)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">d</span>
+        <label class="lightbox-close" for="lb-d" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/1-FL_boxplot_dT.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="d"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-e">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-e" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="square" style="--fig-color:var(--fig-e)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">e</span>
+        <label class="lightbox-close" for="lb-e" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/2-FL_insitu_diurnal.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="e"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-f">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-f" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="wide" style="--fig-color:var(--fig-f)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">f</span>
+        <label class="lightbox-close" for="lb-f" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/5-multipanel-monthly.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="f"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-g">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-g" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="wide" style="--fig-color:var(--fig-g)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">g</span>
+        <label class="lightbox-close" for="lb-g" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/6-multipanel-monthly-meteo.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="g"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-h">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-h" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="square" style="--fig-color:var(--fig-h)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">h</span>
+        <label class="lightbox-close" for="lb-h" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/7-PSF_UAV_to_Landsat.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="h"></div>
+    </div>
+  </div>
+
+  <input type="checkbox" class="lb-toggle" id="lb-i">
+  <div class="lightbox">
+    <label class="lightbox-backdrop" for="lb-i" aria-label="Close"></label>
+    <div class="lightbox-content" data-shape="square" style="--fig-color:var(--fig-i)">
+      <div class="lightbox-figure">
+        <span class="lightbox-badge">i</span>
+        <label class="lightbox-close" for="lb-i" aria-label="Close">&times;</label>
+        <img class="lightbox-img" src="media/8-UAV_to_InSitu.svg" loading="lazy" alt="">
+      </div>
+      <svg class="lightbox-connector" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M50,0 L50,26 M15,26 L85,26"/></svg>
+      <div class="lightbox-caption" data-fig="i"></div>
+    </div>
+  </div>
+
+  <!-- load figure captions from the human-editable captions.html -->
+  <script>
+    fetch("captions.html")
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        doc.querySelectorAll("[data-fig]").forEach(function (node) {
+          var target = document.querySelector('.lightbox-caption[data-fig="' + node.dataset.fig + '"]');
+          if (target) target.innerHTML = node.innerHTML.trim();
+        });
+      });
+  </script>
+</body>
+</html>
